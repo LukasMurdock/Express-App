@@ -22,16 +22,18 @@ app.use('/users', usersRouter);
 
 app.use(express.static('images'))
 
-app.get('/video', function(req, res) {
-    const path = 'assets/first.mp4'
-    const stat = fs.statSync(path)
-    const fileSize = stat.size
-    const range = req.headers.range
+
+app.get('/video', function(getVideo) {
+  function getVideo(request, response){
+    var path = 'assets/first.mp4'
+    var stat = fs.statSync(path)
+    var fileSize = stat.size
+    var range = req.headers.range
   
     if (range) {
-      const parts = range.replace(/bytes=/, "").split("-")
-      const start = parseInt(parts[0], 10)
-      const end = parts[1]
+      var parts = range.replace(/bytes=/, "").split("-")
+      var start = parseInt(parts[0], 10)
+      var end = parts[1]
         ? parseInt(parts[1], 10)
         : fileSize-1
   
@@ -54,6 +56,6 @@ app.get('/video', function(req, res) {
       res.writeHead(200, head)
       fs.createReadStream(path).pipe(res)
     }
-  })
+  }})
 
 module.exports = app;
